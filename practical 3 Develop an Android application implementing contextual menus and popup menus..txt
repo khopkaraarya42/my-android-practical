@@ -1,0 +1,112 @@
+1.	Go to res > layout > activity_main.xml 
+		
+<LinearLayoutandroid:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center"
+android:padding="20dp"
+xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/txt"
+android:text="Long Press Me"
+android:textSize="24dp"
+android:textStyle="bold"/>
+
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/btn"
+android:text="Show popup menu"
+android:textSize="24dp"/>
+
+</LinearLayout>
+
+2.	Go to app > java > MainActivity.java 	
+package com.example.pract18;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+TextView txt;
+    Button btnpop;
+
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+EdgeToEdge.enable(this);
+setContentView(R.layout.activity_main);
+        txt=findViewById(R.id.txt);
+btnpop=findViewById(R.id.btn);
+
+registerForContextMenu(txt);
+
+btnpop.setOnClickListener(v -> {
+PopupMenupopupMenu=new PopupMenu(MainActivity.this,btnpop);
+            popupMenu.getMenuInflater().inflate(R.menu.mymenu,popupMenu.getMenu());
+
+popupMenu.setOnMenuItemClickListener(item -> {
+Toast.makeText(this,item.getTitle(), Toast.LENGTH_LONG).show();
+                return true;
+            });
+popupMenu.show();
+        });
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfomenuInfo) {
+super.onCreateContextMenu(menu, v, menuInfo);
+
+menu.setHeaderTitle("Select Option");
+getMenuInflater().inflate(R.menu.mymenu,menu);
+
+    }
+
+    @Override
+    public booleanonContextItemSelected(@NonNull MenuItem item) {
+Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+        return true;
+    }
+}
+
+
+3.	Go to res > right click > New > Android Resourse>menu_main[type> menu] 
+
+4.	Go to res > menu > Right click > new > Menu Resource File > mymenu.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item
+android:title="Edit"
+android:id="@+id/menuedit"/>
+<item
+android:title="Delete"
+android:id="@+id/menudelete"/>
+<item
+android:title="Share"
+android:id="@+id/menushare"/>
+
+</menu>
+

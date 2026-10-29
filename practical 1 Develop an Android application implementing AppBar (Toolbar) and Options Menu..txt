@@ -1,0 +1,65 @@
+1.	Go to res > layout > activity_main.xml 
+<LinearLayoutandroid:layout_width="match_parent"     android:layout_height="match_parent"     xmlns:app="http://schemas.android.com/apk/res-auto"     android:orientation="vertical"     android:id="@+id/main"     xmlns:android="http://schemas.android.com/apk/res/android">
+
+<androidx.appcompat.widget.Toolbarandroid:layout_width="match_parent"         android:layout_height="?attr/actionBarSize"         android:id="@+id/toolbar"         app:title="ToolBar Demo"         android:background="#090909"         app:titleTextColor="#E7729A"/>
+
+<TextViewandroid:layout_width="wrap_content"         android:layout_height="wrap_content"         android:textSize="30dp"         android:textStyle="bold"         android:layout_gravity="center"         android:text="AppBar and Option Menu"         android:padding="22dp"/>
+</LinearLayout>
+
+
+2.	Go to res > right click > New > Android Resourse>menu_main[type> menu] 
+
+3.	Go to res > menu > Right click > new > Menu Resource File > menu_main.xml 
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item     android:title="Home"     android:id="@+id/home"/>
+<item         android:title="Settings"         android:id="@+id/settings"/>
+<item         android:title="About"         android:id="@+id/about"/>
+<item         android:title="Logout"         android:id="@+id/logout"/>
+</menu>
+
+
+4.	Go to app > java > MainActivity.java 
+package com.example.p16; 
+
+import android.annotation.SuppressLint; import android.os.Bundle; import android.view.Menu; import android.view.MenuItem; import android.widget.Toast; 
+
+import androidx.annotation.NonNull; import androidx.appcompat.widget.Toolbar; 
+
+import androidx.activity.EdgeToEdge; 
+import androidx.appcompat.app.AppCompatActivity; import androidx.core.graphics.Insets; import androidx.core.view.ViewCompat; import androidx.core.view.WindowInsetsCompat; 
+
+public class MainActivity extends AppCompatActivity { 
+    Toolbar toolbar; 
+
+    @SuppressLint("MissingInflatedId") 
+    @Override     protected void onCreate(Bundle savedInstanceState) {  super.onCreate(savedInstanceState);   EdgeToEdge.enable(this);   setContentView(R.layout.activity_main);         toolbar=findViewById(R.id.toolbar);   setSupportActionBar(toolbar); 
+    } 
+
+    @Override     public booleanonCreateOptionsMenu(Menu menu) {  getMenuInflater().inflate(R.menu.menu_main,menu);         return true; 
+    } 
+
+    @Override     public booleanonOptionsItemSelected(@NonNull MenuItem item) {         int id=item.getItemId();   if(id==R.id.home) 
+        { 
+Toast.makeText(this, "Home Selected", Toast.LENGTH_SHORT).show(); 
+        } else if (id==R.id.settings) { 
+Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show(); 
+        } else if (id==R.id.about) { 
+Toast.makeText(this, "About Selected", Toast.LENGTH_SHORT).show(); 
+        } else if (id==R.id.logout) { 
+Toast.makeText(this, "Logout Selected", Toast.LENGTH_SHORT).show(); 
+        } 
+        return true; 
+    } 
+} 
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,73 @@
+1.	Go to res > layout > activity_main.xml 
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Notification"
+        android:id="@+id/btnnotify"
+        android:textSize="20dp"/>
+
+</LinearLayout>
+
+2.	Go to app > java > MainActivity.java 
+package com.example.pract23;
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    Button btnnotify;
+    String CHANNEL_ID="MyChannel";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        btnnotify=findViewById(R.id.btnnotify);
+
+        btnnotify.setOnClickListener(v -> {
+            showNotification();
+
+        });
+    }
+    public void  showNotification()
+    {
+        NotificationManager manager=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel=new NotificationChannel(CHANNEL_ID,"MyChannel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(this,
+                CHANNEL_ID).setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setContentTitle("Notification Demo ")
+                .setContentText("Hello from android notification")
+                .setAutoCancel(false);
+        manager.notify(1,builder.build());
+    }
+}
+
+3.	Manifests -> AndroidManifests.xml 
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS">
+</uses-permission>

@@ -1,0 +1,128 @@
+1.	Go to res > layout > activity_main.xml 
+<LinearLayoutandroid:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="20dp"
+android:gravity="center"
+xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<Button
+android:id="@+id/btnalert"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Show AlertDialog"
+android:textSize="20dp"/>
+
+<Button
+android:id="@+id/btncustom"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Show Custom Dialog"
+android:textSize="20dp"/>
+</LinearLayout>
+
+2.	Res>Right Click>New>XML>Layout xml file>dialog_custom.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayoutxmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:orientation="vertical"
+android:padding="20dp"
+android:layout_height="match_parent">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Custom DialogFragment"
+android:textSize="20dp"
+android:textStyle="bold"/>
+
+<EditText
+android:id="@+id/txtname"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter Name"
+android:textSize="20dp"
+android:layout_marginTop="20dp"/>
+
+</LinearLayout>
+
+3.	Go to app > java > MainActivity.java 	
+package com.example.pract17;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    Button btnalert,btncustom;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+EdgeToEdge.enable(this);
+setContentView(R.layout.activity_main);
+
+btnalert=findViewById(R.id.btnalert);
+btncustom=findViewById(R.id.btncustom);
+
+btnalert.setOnClickListener(v -> {
+AlertDialog.Builder builder=new AlertDialog.Builder(this);
+builder.setTitle("Delete Files")
+  .setMessage("Are you sure you want to delete?")
+  .setPositiveButton("Yes",(dialog, which) ->
+   {String name=txtname.getText().toString}
+
+        );
+
+        });
+  }
+}
+
+4.	kotlin>Right Click>New>javaclass>customDialogFragement
+
+package com.example.pract17;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.DialogCompat;
+import androidx.fragment.app.DialogFragment;
+
+public class CustomDialogFragment extends DialogFragment {
+EditTexttxtname;
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+LayoutInflater inflater=requireActivity().getLayoutInflater();
+        View view=inflater.inflate(R.layout.dialog_custom,null);
+txtname=view.findViewById(R.id.txtname);
+builder.setView(view)
+                .setTitle("Custom Dialog")
+                .setPositiveButton("Submit",(dialog, which) ->
+                {String name=txtname.getText().toString();
+Toast.makeText(getActivity(),"Entered: "+name, Toast.LENGTH_SHORT).show();})
+                .setNegativeButton("Cancel",(dialog, which) -> {
+dialog.dismiss();
+                });
+
+        return builder.create();
+    }
+}
+

@@ -1,0 +1,168 @@
+1.	Go to res > layout > activity_main.xml 
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="25dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your Name"
+        android:textSize="25dp"
+        android:id="@+id/txtname"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insert"
+        android:textSize="25dp"
+        android:id="@+id/btninsert"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Date"
+        android:textSize="25dp"
+        android:id="@+id/btnview"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter update Name"
+        android:textSize="25dp"
+        android:id="@+id/txtupdatename"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:textSize="25dp"
+        android:id="@+id/btnupdate"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:textSize="25dp"
+        android:id="@+id/btndelete"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:padding="20dp"
+        android:id="@+id/txtresult"/>
+</LinearLayout>
+
+2.	Go to app > java > MainActivity.java 
+package com.example.pract25;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    EditText txtname,txtnewname;
+    Button btninsert,btnupdate,btnview,btndelete;
+    TextView txtresult;
+    DBHelper dbHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        txtname=findViewById(R.id.txtname);
+        txtnewname=findViewById(R.id.txtupdatename);
+        btninsert=findViewById(R.id.btninsert);
+        btnupdate=findViewById(R.id.btnupdate);
+        btnview=findViewById(R.id.btnview);
+        btndelete=findViewById(R.id.btndelete);
+        txtresult=findViewById(R.id.txtresult);
+        dbHelper=new DBHelper(this);
+
+        btninsert.setOnClickListener(v -> {
+            String name=txtname.getText().toString();
+            dbHelper.insertData(name);
+            Toast.makeText(this, "Data Inserted", Toast.LENGTH_SHORT).show();
+        });
+        btnview.setOnClickListener(v -> {
+            String data=dbHelper.viewData();
+            txtresult.setText(data);
+        });
+        btnupdate.setOnClickListener(v -> {
+            String oldname=txtname.getText().toString();
+            String newname=txtnewname.getText().toString();
+            dbHelper.updateData(oldname,newname);
+            Toast.makeText(this, "Data Updated", Toast.LENGTH_SHORT).show();
+        });
+        btndelete.setOnClickListener(v -> {
+            String name=txtnewname.getText().toString();
+            dbHelper.deleteData(name);
+            Toast.makeText(this, "Data Deleted", Toast.LENGTH_SHORT).show();
+        });
+}
+}
+
+3.	 kotlin>Right Click>New>javaclass> DBHelper.java
+
+package com.example.pract25;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DBHelper extends SQLiteOpenHelper {
+
+    public DBHelper(Context context)
+    {
+        super(context,"StudentDB",null,1);
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE student("+"name TEXT)");
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+    public void insertData(String name)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put("name",name);
+        db.insert("student",null,values);
+    }
+    public String viewData(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * FROM student",null);
+        String data="";
+        while (cursor.moveToNext())
+        {
+            data+= cursor.getString(0)+"\n";
+        }
+        return data;
+    }
+    public void updateData(String oldvalue,String newvalue)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put("name",newvalue);
+        db.update("student",values,"name=?",new String[]{oldvalue});
+    }
+    public void deleteData(String name)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.delete("student","name=?",new String[]{name});
+     }
+}

@@ -1,0 +1,64 @@
+1.	Go to res > layout > activity_main.xml 
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click Me"
+        android:textSize="20dp"
+        android:id="@+id/btnclick"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Long Press Me"
+        android:textSize="20dp"
+        android:id="@+id/btnlongclick"/>
+
+
+</LinearLayout>
+
+
+2.	Go to app > java > MainActivity.java
+package com.example.pract20;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    Button btnclick,btnlongclick;
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        btnclick=findViewById(R.id.btnclick);
+        btnlongclick=findViewById(R.id.btnlongclick);
+
+        btnclick.setOnClickListener(v -> {
+            Toast.makeText(this,"Button Clicked",Toast.LENGTH_SHORT).show();
+        });
+
+        btnlongclick.setOnLongClickListener(v -> {
+            Toast.makeText(this,"Button Long Press Clicked",Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
+
+    }
+}
