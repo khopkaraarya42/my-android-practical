@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Android Practicals</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #174ea6;
+        }
+
+        .practical {
+            background: white;
+            padding: 18px;
+            margin: 15px auto;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #cccccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #1769aa;
+            color: white;
+        }
+
+        pre {
+            background: #202124;
+            color: #f8f8f2;
+            padding: 15px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            border-radius: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>My Android Practicals</h1>
+<p style="text-align:center;">
+    Java | XML | AndroidManifest.xml
+</p>
+
+<div class="practical">
+    <h2>Practical 1</h2>
+    <p>Java Code</p>
+
+    <pre id="java1">// Paste your Java code here</pre>
+    <button onclick="copyCode('java1')">Copy Java Code</button>
+
+    <p>XML Layout Code</p>
+    <pre id="xml1"><!-- Paste your XML layout code here --></pre>
+    <button onclick="copyCode('xml1')">Copy XML Code</button>
+
+    <p>AndroidManifest.xml</p>
+    <pre id="manifest1"><!-- Paste your Manifest code here --></pre>
+    <button onclick="copyCode('manifest1')">Copy Manifest Code</button>
+</div>
+
+<script>
+    function copyCode(id) {
+        const code = document.getElementById(id).textContent;
+
+        navigator.clipboard.writeText(code)
+            .then(() => alert("Code copied successfully!"))
+            .catch(() => alert("Copy failed. Please select and copy the code manually."));
+    }
+</script>
+
+</body>
+</html>
